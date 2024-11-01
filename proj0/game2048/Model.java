@@ -113,22 +113,63 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+
+//        int size = board.size();
+//        for  (int c =  size - 1  ; c >= 0 ; -- c){
+//            for (int r =  0 ; r < size ; ++ r) {
+//                Tile t = board.tile(c, r);
+//                if(board.tile(c , r)  != null) {
+//                    int curr = r;
+//                    for (int i = r + 1 ; i < size ; ++ i ) {
+//                        if (board.tile(c, i) == null || board.tile(c, i).value() == board.tile(c, r).value()) {
+//                            curr = i;
+//                        }
+//                    }
+//                    board.move(c, curr, t);
+//                    changed = true;
+//                }
+//            }
+//        }
+
+        System.out.printf("======================\n");
+
         int size = board.size();
-        for  (int c =  size - 1  ; c >= 0 ; -- c){
-            for (int r =  0 ; r < size ; ++ r) {
-                Tile t = board.tile(c, r);
-                if(board.tile(c , r)  != null) {
-                    int curr = r;
-                    for (int i = r + 1 ; i < size ; ++ i ) {
-                        if (board.tile(c, i) == null || board.tile(c, i).value() == board.tile(c, r).value()) {
-                            curr = i;
+
+        for (int r = 0 ; r < size ;  ++ r ) {
+            System.out.printf("\n\n");
+            for (int c = size - 1,k = c - 1; c >= 0 ; -- c) {
+
+
+                while (k >= 0 && board.tile(r, k) == null ) -- k;
+
+                System.out.printf("k: %d , c:%d\n",k, c);
+
+
+
+
+
+
+                if(k != c && k >= 0 && board.tile(r,k) != null) {
+                    Tile tA = board.tile(r,k);
+                    Tile tB = board.tile(r,c);
+
+
+                    if(tB == null || tB.value() == tA.value()) {
+                        System.out.printf("mv (%d,%d) => (%d,%d)\n",r,k,r,c);
+                        board.move(r,c,tA);
+                        changed = true;
+                    }else {
+                        if(c > 0 && c - 1 > k) {
+                            board.move(r,c - 1, tA);
+                            System.out.printf("mv (%d,%d) => (%d,%d)\n",r,k,r,c - 1);
+                            changed = true;
                         }
                     }
-                    board.move(c, curr, t);
-                    changed = true;
                 }
             }
+
         }
+
         checkGameOver();
         if (changed) {
             setChanged();
