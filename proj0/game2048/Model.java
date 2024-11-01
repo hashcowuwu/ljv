@@ -113,7 +113,22 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+        int size = board.size();
+        for  (int c =  size - 1  ; c >= 0 ; -- c){
+            for (int r =  0 ; r < size ; ++ r) {
+                Tile t = board.tile(c, r);
+                if(board.tile(c , r)  != null) {
+                    int curr = r;
+                    for (int i = r + 1 ; i < size ; ++ i ) {
+                        if (board.tile(c, i) == null || board.tile(c, i).value() == board.tile(c, r).value()) {
+                            curr = i;
+                        }
+                    }
+                    board.move(c, curr, t);
+                    changed = true;
+                }
+            }
+        }
         checkGameOver();
         if (changed) {
             setChanged();
@@ -154,6 +169,12 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        int MAX_PIECE = 2048;
+        for (int i = 0 ; i < 4; ++ i ) {
+            for (int j = 0 ; j < 4 ; ++ j ) {
+               if(b.tile(i,j) != null &&  b.tile(i,j).value() == MAX_PIECE)return true;
+            }
+        }
         return false;
     }
 
@@ -165,6 +186,28 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+
+        int fx[] = {1,-1,0,0};
+        int fy[] = {0,0,1,-1};
+        for (int i = 0 ; i < 4 ; ++ i ) {
+            for (int j = 0 ; j < 4 ; ++ j ) {
+                if(b.tile(i,j) ==  null) {
+                    return true;
+                }else {
+                    for (int k = 0 ; k < 4 ; ++ k ) {
+                        int xx = fx[k] + i;
+                        int yy = fy[k] + j;
+                        if(xx < 4 && xx >= 0 && yy < 4 && yy >= 0) {
+                            if(b.tile(xx,yy) != null && b.tile(xx,yy).value() == b.tile(i,j).value())
+                                return true;
+                        }
+                    }
+                }
+            }
+        }
+
+
+
         return false;
     }
 
