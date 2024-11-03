@@ -131,23 +131,18 @@ public class Model extends Observable {
 //            }
 //        }
 
-        System.out.printf("======================\n");
+//        System.out.printf("======================\n");
 
         int size = board.size();
 
         for (int r = 0 ; r < size ;  ++ r ) {
-            System.out.printf("\n\n");
-            for (int c = size - 1,k = c - 1; c >= 0 ; -- c) {
+//            System.out.printf("\n\nr = %d",r);
+            for (int c = size - 1,k = size - 2; c >= 0 ;  -- c, k = c - 1) {
 
 
-                while (k >= 0 && board.tile(r, k) == null ) -- k;
+                while (k >= 0 && board.tile(r, k) == null) -- k;
 
-                System.out.printf("k: %d , c:%d\n",k, c);
-
-
-
-
-
+//                System.out.printf("k: %d , c:%d\n",k, c);
 
                 if(k != c && k >= 0 && board.tile(r,k) != null) {
                     Tile tA = board.tile(r,k);
@@ -155,17 +150,18 @@ public class Model extends Observable {
 
 
                     if(tB == null || tB.value() == tA.value()) {
-                        System.out.printf("mv (%d,%d) => (%d,%d)\n",r,k,r,c);
+//                        System.out.printf("mv:1 (%d,%d) => (%d,%d)\n",r,k,r,c);
                         board.move(r,c,tA);
-                        changed = true;
+                        if(tB == null)c ++ ;
                     }else {
                         if(c > 0 && c - 1 > k) {
                             board.move(r,c - 1, tA);
-                            System.out.printf("mv (%d,%d) => (%d,%d)\n",r,k,r,c - 1);
-                            changed = true;
+//                            System.out.printf("mv:2 (%d,%d) => (%d,%d)\n",r,k,r,c - 1);
                         }
                     }
                 }
+
+                changed = true;
             }
 
         }
