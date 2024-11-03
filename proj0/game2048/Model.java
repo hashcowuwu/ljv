@@ -151,11 +151,14 @@ public class Model extends Observable {
 
                     if(tB == null || tB.value() == tA.value()) {
 //                        System.out.printf("mv:1 (%d,%d) => (%d,%d)\n",r,k,r,c);
+
                         board.move(r,c,tA);
                         if(tB == null)c ++ ;
+                        else this.score += tB.value() * 2;
                     }else {
                         if(c > 0 && c - 1 > k) {
                             board.move(r,c - 1, tA);
+                            if(board.tile(r,c - 1) != null)this.score += board.tile(r,c - 1).value() * 2;
 //                            System.out.printf("mv:2 (%d,%d) => (%d,%d)\n",r,k,r,c - 1);
                         }
                     }
